@@ -1,21 +1,5 @@
 'use strict'
 
-// $(document).ready(function() {
-//     $.ajax({
-//         type: "GET",
-//         url: "https://reqres.in/api/users",
-//         dataType: "json",
-//         data: "data",
-//         success: function(data) {
-//             $.each(data, function(i, item) {
-//                 var div = "<div>" + '<img class="image" src="' +
-//                     i.avatar + '"></div>';
-//                 $("#container").append(div);
-//             })
-//         }
-//     });
-// });
-
 let div_usuarios = document.querySelector("#usuarios");
 let usuarios = [];
 
@@ -37,3 +21,28 @@ fetch("https://reqres.in/api/users")
             div_usuarios.appendChild(div);
         });
     });
+let indexP = 0;
+
+function button() {
+    fetch("https://reqres.in/api/users?page=2")
+        .then(data => data.json())
+        .then(users => {
+            usuarios = users.data;
+            for (let index = 0; index < usuarios.length; index++) {
+                if (indexP === index) {
+                    let avatar = usuarios[index].avatar;
+                    let name = usuarios[index].first_name + " " + usuarios[index].last_name;
+                    let div = document.createElement('div');
+                    let imagen = document.createElement('img');
+                    let nombre = document.createElement('h2');
+                    div.setAttribute('class', 'caja');
+                    imagen.setAttribute('src', avatar);
+                    nombre.innerHTML = name;
+                    div.appendChild(imagen);
+                    div.appendChild(nombre);
+                    div_usuarios.appendChild(div);
+                }
+            }
+            indexP++;
+        });
+}
